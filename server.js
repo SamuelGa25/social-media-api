@@ -16,5 +16,5 @@ mongoose.connect(process.env.MONGODB_URI || 'mondodb://localhost/social-mdedia-a
 
 mongoose.set("debug", true);
 
-app.listen(PORT, ()=> console.log(`You are now on PORT: ${PORT}`))
+app.listen(PORT, ()=> console.log(`You are now on PORT: ${PORT}`));
     
