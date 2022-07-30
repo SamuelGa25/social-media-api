@@ -1,4 +1,4 @@
-const {Thought, User} = require('./models');
+const {Thought, User} = require('../models');
 
 
 const thoughts = {
@@ -119,6 +119,7 @@ const thoughts = {
             res.status(500).json(err);
         });
     },
+
 }
 
 module.exports = thoughts;

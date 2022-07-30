@@ -1,6 +1,7 @@
-const { Schema, model, Types } = require("mongoose");
-const moment = require("moment");
+const { Schema, model} = require("mongoose");
 
+
+//Reaction schema 
 const reactionSchema = new Schema(
     {
         reactionId: {
@@ -24,11 +25,14 @@ const reactionSchema = new Schema(
     },
     {
         toJSON:{
-            getters:true,
+            virtuals: true,
+            getters:true
         }
     }
 )
 
+
+//Thought Schema both on same file
 const thoughtSchema = new Schema(
     {
         thoughtText:{
@@ -62,4 +66,4 @@ const thoughtSchema = new Schema(
 
 const Thought = model("Thought", thoughtSchema)
 
-module.exports = { thoughtSchema, reactionSchema }
+module.exports = Thought;
