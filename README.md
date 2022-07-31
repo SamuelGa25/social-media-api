@@ -12,11 +12,14 @@
   ## Installation
   Install dependencies (express, mongoose), install insommia, in the terminal do npm start.
   ## Built With
-  JavaScript,Node, npm, mongoDB
+  JavaScript, Node, npm, mongoDB
   ## Contribution 
   Samuel Garcia
 
   ## Walkthrough Video
+  [video1157868442.mp4.zip](https://github.com/SamuelGa25/social-media-api/files/9228859/video1157868442.mp4.zip)
+
+
 
   ## Contact Information:
   - UserName: [samuelga25]

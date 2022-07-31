@@ -109,10 +109,10 @@ const thoughts = {
         )   
         .then(dbUserData => {
             if(!dbUserData){
-                res.status(404).json({message: "The user was not found!"});
+                res.status(404).json({message: "The reaction was not found!"});
                 return;
             }
-            res.json({message: "Thought deleted!"})
+            res.json({message: "Reaction Created!"})
         })
         .catch(err => res.json(err));
 
@@ -127,10 +127,10 @@ const thoughts = {
         )
         .then(dbUserData => {
             if(!dbUserData){
-                res.status(404).json({message: "The user was not found!"});
+                res.status(404).json({message: "The reaction was not found!"});
                 return;
             }
-            res.json({message: "Thought deleted!"})
+            res.json({message: "Reaction deleted!"})
         })
         .catch(err => res.json(err));
     },
