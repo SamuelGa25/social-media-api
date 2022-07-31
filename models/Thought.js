@@ -1,35 +1,5 @@
 const { Schema, model} = require("mongoose");
-
-
-//Reaction schema 
-const reactionSchema = new Schema(
-    {
-        reactionId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId()
-        },
-        reactionBody:{
-            type: String,
-            required: 'Provide a reaction to this thought',
-            maxLength: 280
-        },
-        name:{
-            type: String,
-            required: 'Provide your name:'
-        },
-        createdAt:{
-            type: Date,
-            default: Date.now,
-            get: (value) => moment().format("MMM DoB YY, h:mm a")
-        },
-    },
-    {
-        toJSON:{
-            virtuals: true,
-            getters:true
-        }
-    }
-)
+const reactionSchema = require("./Reaction");
 
 
 //Thought Schema both on same file
@@ -44,13 +14,12 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: (value) => moment().format("MMM DoB YY, h:mm a")
+            // get: (value) => moment().format("MMM DoB YY, h:mm a")
 
         },
-        name:{
-
+        username:{
             type: String,
-            required: true,
+            required: "Provide the username"
             
         },
         reactions: [reactionSchema]
@@ -59,10 +28,13 @@ const thoughtSchema = new Schema(
         toJSON:{
             virtuals: true,
             getters: true,
-        },
-        id: false,
-    },
+        }
+    }
 );
+
+thoughtSchema.virtual('reactionCount', function(){
+    return this.reactions.length;
+})
 
 const Thought = model("Thought", thoughtSchema)
 

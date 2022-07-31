@@ -1,7 +1,6 @@
 const {Schema, model, Types }= require("mongoose");
 
 const UserSchema = new Schema(
-    
     {
         username:{
             type: String, 
@@ -32,7 +31,6 @@ const UserSchema = new Schema(
         toJSON:{
             virtuals: true,
         },
-        id: false,
     }
 );
 

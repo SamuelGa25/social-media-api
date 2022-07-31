@@ -5,18 +5,18 @@ const thoughts = {
     //api thoughts
     //Getting all the thoughts
     AllThoughts(req, res){
-
-        Thought.find()
-        //remove select from showing 
-        .then(dbThoughtData => {
-            if(!dbThoughtData){
-                res.status(404).json({message:"No thought with this id!"})
-                return;
-            }
-            res.json(dbUserData);
-        }) 
-        .catch(err => res.json(err));
-
+       Thought.find()
+            // remove select from showing in return of the json data
+            .select('-__v')
+            .sort({ createdAt: -1 })
+            .then(dbThoughtData => {
+                if (!dbThoughtData) {
+                    res.status(404).json({ message: "No thought with this id!" })
+                    return;
+                }
+                res.json(dbThoughtData)
+            })
+            .catch(err => res.status(400).json(err));
     },
     //creating the new thought
     newThought({body}, res){
@@ -28,8 +28,14 @@ const thoughts = {
                 {new: true}
             )
         })
+        .then(dbUserData => {
+            if(!dbUserData){
+                res.status(404).json({message:"No thought with this id!"})
+                return;
+            }
+            res.json(dbUserData);
+        }) 
         .catch(err => res.status(400).json(err));
-    
     },
 
     //Getting the thought id's
@@ -37,10 +43,11 @@ const thoughts = {
         Thought.findOne(
             {_id:params.id}
         )
+        .select("-__v")
         .sort({createAt: -1})
         .then(dbThoughtData =>{
             if(!dbThoughtData){
-                res.status(404).json({message:"No thought found!"})
+                res.status(404).json({message: "No thought found!"})
                 return;
             }
             res.json(dbThoughtData)
@@ -50,14 +57,15 @@ const thoughts = {
     },
 
     //UPDATE WITH ID'S
-    updateThoughtId({params}, res){
+    updateThoughtId({params, body}, res){
         Thought.findOneAndUpdate(
             {_id: params.id},
-            {new: true}
+            body,
+            {new: true, runValidators: true}
         )
         .then(dbThoughtData =>{
             if (!dbThoughtData){
-                res.status(404).json({message: "No thought with this id!"})
+                res.status(404).json({message: "No thought found!"})
             }
             res.json(dbThoughtData);
         })
@@ -71,6 +79,7 @@ const thoughts = {
         .then((dbThoughtData) => {
             if (!dbThoughtData){
                 res.status(404).json({message: "No thought with this id!"})
+                return;
             }
             return User.findOneAndUpdate(
                 {user: dbThoughtData.user},
@@ -97,12 +106,15 @@ const thoughts = {
             {$addToSet: {reactions: body}},//and return new data after I passed all validation
             {new: true, runValidators: true },//returning the data 
         
-            )   
-            .then((dbThoughtData)=> res.json(dbThoughtData))
-            .catch((err)=>{
-                console.log(err);
-                res.status(500).json(err);
-        });
+        )   
+        .then(dbUserData => {
+            if(!dbUserData){
+                res.status(404).json({message: "The user was not found!"});
+                return;
+            }
+            res.json({message: "Thought deleted!"})
+        })
+        .catch(err => res.json(err));
 
     },
 
@@ -113,11 +125,14 @@ const thoughts = {
             {$pull: { reactions: {_id: params.reactionId } } },//returning the updated thought
             {new: true, runValidators: true },//returning the data
         )
-        .then((dbThoughtData)=> res.json(dbThoughtData))
-        .catch((err)=>{
-            console.log(err);
-            res.status(500).json(err);
-        });
+        .then(dbUserData => {
+            if(!dbUserData){
+                res.status(404).json({message: "The user was not found!"});
+                return;
+            }
+            res.json({message: "Thought deleted!"})
+        })
+        .catch(err => res.json(err));
     },
 
 }

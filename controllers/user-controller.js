@@ -3,9 +3,11 @@ const {User, Thought} = require('../models');
 //api for users 
 
 const users = {
-
+    //getting all the users
     AllUser(req, res){
         User.find()
+            .select('-__v')
+            .sort({ _id: -1})
             .then(dbUserData => res.json(dbUserData))
             .catch(err => {
                 console.log(err);
@@ -25,12 +27,18 @@ const users = {
             {_id: params.id}
 
         )
-        .then(dbUserData =>{
+        .select("-__v")
+        .sort({_id:-1})
+        .then(dbUserData => {
             if(!dbUserData){
-                res.status(404).json({message: 'No user found!'});
+                res.status(404).json({message: "The user was not found!"});
                 return;
             }
             res.json(dbUserData)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
         })
 
     },
@@ -38,6 +46,7 @@ const users = {
     updateUserId({params, body},res){
         User.findOneAndUpdate(
             {_id: params.id},
+            body,
             {new: true, runValidators: true}
         )
         .then(dbUserData => {

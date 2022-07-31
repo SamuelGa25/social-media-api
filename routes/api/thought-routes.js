@@ -9,7 +9,7 @@ router
     .post(newThought)
 
 router
-    .route('./:id')
+    .route('/:id')
     .get(thoughtId)
     .put(updateThoughtId)
     .delete(deleteThoughtId)
@@ -20,7 +20,7 @@ router
 .post(newReaction)
 
 router
-.route('./:thoughtId/reactions/:reactionId')
+.route('/:thoughtId/reactions/:reactionId')
 //delete to pull and remove 
 .delete(deleteReactionId)
 
